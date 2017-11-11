@@ -8,7 +8,7 @@
 % kann bubble break, topexercise sein
 
 \Names{Jonas Probst, Simon Giebenhain, Gabriel Scheibler, Clemens Gutknecht}
-\Lecture[DLCV]{Deep Learniing for Computer Vision}
+\Lecture[DLCV]{Deep Learning for Computer Vision}
 \Term{WS 2017/18}
 
 \begin{document}
@@ -16,11 +16,13 @@
 
 		
 		\begin{exercise}[p=20]{}
-        	
+		We decided to combine all training images in one design matrix of shape (number of pixels, 3). Then we compute vector r\_vec which contains the r value for each pixel.  Using both of these and the model parameter vector W containing the $n$ a-values we get our prediction function by simple matrics multiplication on which we compute the loss function which is optimized using the Adam Optimizer. See "solution.py" 	
 		\end{exercise}
 		
 		\begin{exercise}[p=10]{}
-        	
+        Results only got significantly better up to n=4, after that the loss got a bit higher again but stayed more or less the same.\\
+        \includegraphics[scale=0.2]{Figure_1}	
+        \includegraphics[scale=0.2]{Figure_1-2}
 		\end{exercise}
 		
 		\begin{exercise}[p=10]{}
@@ -120,33 +122,6 @@ $\nabla E(\Theta^{[1]}) =
 		
 		$$h (p + \tau h) - h(p) = g(f(p + \tau h)) - g(f(p)) = g'(f(p))\tau \nabla f(p)^T h + r_h(\tau)$$ with $\lim_{\tau \to 0}\frac{r_h(\tau)}{\tau} = 0$. \\This matches exactly to the definiton(as a linear approximation) of the gradient/derivative.
         	
-		\end{exercise}
-		
-		
-
-
-		\begin{exercise}[p=2]{Data Mining and Visualization}
-		
-		\question{}{
-			The subway map or bus map is an example of visulazation in my everyday life. It conveys the most important information very well, while ignoring details. Thus the visualization is very easy and quick to understand.
-		}
-		
-		\question{}{
-			The Google advertisments are the most prominant examples of data mining in my everyday life. Data is mined from my browser history, in oder to display fitting ads.
-		}
-
-		\end{exercise}
-
-		\begin{exercise}[p=4]{Visualization: Human vs. Computer}
-		\question{}{
-			It makes sense, because it can be very tedious to visualize huge data sets by hand. This can be solved well by automation. \\
-			Moreover digital visualzations can be updated (e.g. improve visualization, incorporate new data) at every time without much effort, whereas non-digital visualizations have to be drawn from scratch.
-		}
-		\question{}{
-		The raw data extracted by the computer is hard to interpret. \\
-		The visulaization makes it much easier to interpret the result.\\
-		Additionaly this can lead to new insights/discovery of pattern and inspire a change in the algorithm applied proviously.
-		}
 		\end{exercise}
 		
 		
