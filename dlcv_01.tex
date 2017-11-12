@@ -20,13 +20,14 @@
 		\end{exercise}
 		
 		\begin{exercise}[p=10]{}
-        Results only got significantly better up to n=4, after that the loss got a bit higher again but stayed more or less the same.\\
-        \includegraphics[scale=0.2]{Figure_1}	
-        \includegraphics[scale=0.2]{Figure_1-2}
+        Results only got significantly better up to n=4, after that the training error stayed more or less the same with the validation error increasing slightly so overfitting isn't a big problem.\\
+        \includegraphics[scale=0.5]{poly_1-20_zoom.png}	
 		\end{exercise}
 		
 		\begin{exercise}[p=10]{}
-        	
+        	Regularization is a method to deal with overfitting, which we don't really have in this case, so changing $\lambda$ didn't make too much of a difference on validation error. Using a polynomial of degree 10 we got best results with $\lambda \approx 0.6.$\\
+        	\includegraphics[scale=0.4]{Lambda_Grad10_0_1.png}
+        	\includegraphics[scale=0.4]{Lambda_grad10.png} 
 		\end{exercise}
 		
 		\begin{exercise}[p=10]{}

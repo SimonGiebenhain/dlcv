@@ -31,7 +31,7 @@ xv, yv = np.meshgrid(np.arange(h) - hc, np.arange(w) - wc)
 r_ = np.reshape(np.tile((np.sqrt(xv ** 2 + yv ** 2) / np.sqrt(wc ** 2 + hc ** 2)).reshape((w*h)), number_of_pictures), (w*h* number_of_pictures))
 
 
-def cross_calidation_5():
+def cross_validation_5():
     rand = np.random.permutation(number_of_pictures * w * h)
     rands = np.stack(np.split(rand, 5))
     number_of_degrees = 3
@@ -68,7 +68,8 @@ def cross_calidation_5():
     plt.plot(x_axis, mean_errors[:, 0], 'b--', x_axis, mean_errors[:, 1], 'g')
     plt.show()
 
-def cross_calidation_5_regularization():
+
+def cross_validation_5_regularization():
     rand = np.random.permutation(number_of_pictures * w * h)
     rands = np.stack(np.split(rand, 5))
     number_of_lambdas = 10
@@ -92,16 +93,18 @@ def cross_calidation_5_regularization():
             validation_y[j] = y_images[random_index]
             validation_r[j] = r_[random_index]
         for n in range(1,number_of_lambdas):
-            params, training_error = train_params_regularized(8, training_x, training_y, training_r, 0.5 * n)
+            params, training_error = train_params_regularized(10, training_x, training_y, training_r, 0.1 * n)
             errors[n - 1, 0, i] = training_error
-            print('Polynomial degree: %d' % n)
+            print('Lambda: %f' % (0.1*n))
             errors[n - 1, 1, i] = eval_params(params, validation_x, validation_y, validation_r)
     print(errors)
     mean_errors = np.sum(errors, axis=-1) / 5
     print(mean_errors)
-    x_axis = np.arange(1, number_of_lambdas) * 0.5
+    x_axis = np.arange(1, number_of_lambdas) * 0.1
     plt.plot(x_axis, mean_errors[:, 0], 'b--', label='training MSE')
     plt.plot(x_axis, mean_errors[:, 1], 'g', label='validation MSE')
+    plt.xlabel('Lambda')
+    plt.ylabel('Error')
     plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3,
                ncol=2, mode="expand", borderaxespad=0.)
     plt.show()
@@ -229,6 +232,6 @@ def train_params_regularized(n, x_train, y_train, r_train, lam):
 
 
 #train_params(4, x_images, y_images, r_)
-cross_calidation_5_regularization()
-# cross_calidation_5()
+cross_validation_5_regularization()
+# cross_validation_5()
 #test_segemtation()
