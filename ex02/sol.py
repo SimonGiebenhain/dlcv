@@ -3,21 +3,35 @@ import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
 
+a = 20
+b = 1.2
+
+def sigmoid_modified(x):
+    return 1 / (1 + np.exp(-x * a))
+
+def nomrmalize(I):
+    x_queer = np.sum(np.sum(I, axis=2, keepdims=True), axis=1, keepdims=True) / (784 * 255)
+    train_x = sigmoid_modified((I / 255) - (x_queer/b))
+    for i in range(10,10):
+        plt.subplot(1, 2, 1)
+        plt.imshow(I[i], cmap='gray')
+        plt.subplot(1, 2, 2)
+        plt.imshow(train_x[i], cmap='gray')
+        plt.show()
+    return np.reshape(train_x, (train_x.shape[0], 784))
+
+
 def load_sample_dataset():
     train_test_file_path = 'train_test_file_list.h5'
     with h5py.File(train_test_file_path, 'r') as hf:
-        train_x = np.array(hf.get('train_x'), dtype=np.float64) / 255
-        #plt.imshow(train_x[0], cmap='gray')
-        #plt.show()
-        train_x = np.array(np.split(np.reshape(train_x, (train_x.shape[0], 784)), 463, axis=0), dtype=np.float64)
+        train_x = np.array(np.split(nomrmalize(np.array(hf.get('train_x'), dtype=np.float64)), 463, axis=0), dtype=np.float64)
 
         y_in = np.squeeze(np.array(hf.get('train_y')))
         train_y = np.zeros((y_in.shape[0], 10))
         train_y[np.arange(y_in.shape[0]), y_in] = 1
         train_y = np.array(np.split(train_y, 463, axis=0))
 
-        test_x = np.array(hf.get('test_x'), dtype=np.float64) / 255
-        test_x = np.reshape(test_x, (test_x.shape[0], 784))
+        test_x = nomrmalize(np.array(hf.get('test_x'), dtype=np.float64))
 
         y_test_in = np.squeeze(np.array(hf.get('test_y')))
         test_y = np.zeros((y_test_in.shape[0], 10))
