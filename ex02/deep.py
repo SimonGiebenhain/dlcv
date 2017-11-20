@@ -21,16 +21,15 @@ def nomrmalize(I):
         plt.show()'''
     return np.reshape(train_x, (train_x.shape[0], 784))
 
-
 def load_sample_dataset():
     dataset = 'train_test_file_list.h5'
     with h5py.File(dataset, 'r') as hf:
-        train_x = np.array(np.split(nomrmalize(np.array(hf.get('train_x'), dtype=np.float64)), 463, axis=0), dtype=np.float64)
+        train_x = np.split(nomrmalize(np.array(hf.get('train_x'), dtype=np.float64)), 463, axis=0)
 
         y_in = np.squeeze(np.array(hf.get('train_y')))
         train_y = np.zeros((y_in.shape[0], 10))
         train_y[np.arange(y_in.shape[0]), y_in] = 1
-        train_y = np.array(np.split(train_y, 463, axis=0))
+        train_y = np.split(train_y, 463, axis=0)
 
         test_x = np.split(nomrmalize(np.array(hf.get('test_x'), dtype=np.float64)), 14, axis=0)
 
@@ -41,29 +40,25 @@ def load_sample_dataset():
 
     return train_x, train_y, test_x, test_y
 
-
 train_x,train_y,test_x,test_y = load_sample_dataset()
-
-
-
 
 x = tf.placeholder(tf.float32, shape=[None, 784])
 y_ = tf.placeholder(tf.float32, shape=[None, 10])
 
 def weight_variable(shape):
-  initial = tf.truncated_normal(shape, stddev=0.1)
-  return tf.Variable(initial)
+    initial = tf.truncated_normal(shape, stddev=0.1)
+    return tf.Variable(initial)
 
 def bias_variable(shape):
-  initial = tf.constant(0.1, shape=shape)
-  return tf.Variable(initial)
+    initial = tf.constant(0.1, shape=shape)
+    return tf.Variable(initial)
 
 def conv2d(x, W):
-  return tf.nn.conv2d(x, W, strides=[1, 1, 1, 1], padding='SAME')
+    return tf.nn.conv2d(x, W, strides=[1, 1, 1, 1], padding='SAME')
 
 def max_pool_2x2(x):
-  return tf.nn.max_pool(x, ksize=[1, 2, 2, 1],
-                        strides=[1, 2, 2, 1], padding='SAME')
+    return tf.nn.max_pool(x, ksize=[1, 2, 2, 1],
+                          strides=[1, 2, 2, 1], padding='SAME')
 
 W_conv1 = weight_variable([5, 5, 1, 32])
 b_conv1 = bias_variable([32])
@@ -93,24 +88,27 @@ b_fc2 = bias_variable([10])
 
 y_conv = tf.matmul(h_fc1_drop, W_fc2) + b_fc2
 
-
 cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=y_conv))
 train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
 correct_prediction = tf.equal(tf.argmax(y_conv, 1), tf.argmax(y_, 1))
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
+# TODO random batches
 with tf.Session() as sess:
-  sess.run(tf.global_variables_initializer())
-  j = 0
-  for i in range(20000):
-    batch= [train_x[j, :, :], train_y[j, :, :]]
-    j = (j + 1) % 463
-    if i % 100 == 0:
-      train_accuracy = accuracy.eval(feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.0})
-      print('step %d, training accuracy %g' % (i, train_accuracy))
-    train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: 0.5})
+    sess.run(tf.global_variables_initializer())
+    for i in range(20000):
+        if i % 100 == 0:
+            train_accuracy = accuracy.eval(feed_dict={x: train_x[i % 463], y_: train_y[i % 463], keep_prob: 1.0})
+            print('step %d, training accuracy %g' % (i, train_accuracy))
+        train_step.run(feed_dict={x: train_x[i % 463], y_: train_y[i % 463], keep_prob: 0.5})
 
-total_accuracy = 0
-for i in range(len(test_x)):
-  total_accuracy += accuracy.eval(feed_dict={x: test_x[i], y_: test_y[i], keep_prob: 1.0})
-print("test accuracy %f" % total_accuracy/len(test_x))
+    test_accuracy = 0.0
+    for i in range(len(test_x)):
+        test_accuracy += accuracy.eval(feed_dict={x: test_x[i], y_: test_y[i], keep_prob: 1.0})
+    test_accuracy = test_accuracy / len(test_x)
+    print('test accuracy %s' % test_accuracy)
+    train_accuracy = 0.0
+    for i in range(len(train_x)):
+        train_accuracy += accuracy.eval(feed_dict={x: train_x[i], y_: train_y[i], keep_prob: 1.0})
+    train_accuracy = train_accuracy / len(train_x)
+    print('train accuracy %s' % train_accuracy)
