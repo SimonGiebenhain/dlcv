@@ -1,4 +1,4 @@
-import os, cv2, config, h5py, json
+import h5py
 import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
@@ -12,6 +12,7 @@ def sigmoid_modified(x):
 def nomrmalize(I):
     x_queer = np.sum(np.sum(I, axis=2, keepdims=True), axis=1, keepdims=True) / (784 * 255)
     train_x = sigmoid_modified((I / 255) - (x_queer/bb))
+    #train_x = I/255 - x_queer
     '''for i in range(10,50):
         plt.subplot(1, 2, 1)
         plt.imshow(I[i], cmap='gray')
@@ -31,11 +32,12 @@ def load_sample_dataset():
         train_y[np.arange(y_in.shape[0]), y_in] = 1
         train_y = np.array(np.split(train_y, 463, axis=0))
 
-        test_x = nomrmalize(np.array(hf.get('test_x'), dtype=np.float64))
+        test_x = np.split(nomrmalize(np.array(hf.get('test_x'), dtype=np.float64)), 14, axis=0)
 
         y_test_in = np.squeeze(np.array(hf.get('test_y')))
         test_y = np.zeros((y_test_in.shape[0], 10))
         test_y[np.arange(y_test_in.shape[0]), y_test_in] = 1
+        test_y = np.split(test_y, 14, axis=0)
 
     return train_x, train_y, test_x, test_y
 
@@ -92,8 +94,7 @@ b_fc2 = bias_variable([10])
 y_conv = tf.matmul(h_fc1_drop, W_fc2) + b_fc2
 
 
-cross_entropy = tf.reduce_mean(
-    tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=y_conv))
+cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=y_conv))
 train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
 correct_prediction = tf.equal(tf.argmax(y_conv, 1), tf.argmax(y_, 1))
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
@@ -105,10 +106,11 @@ with tf.Session() as sess:
     batch= [train_x[j, :, :], train_y[j, :, :]]
     j = (j + 1) % 463
     if i % 100 == 0:
-      train_accuracy = accuracy.eval(feed_dict={
-          x: batch[0], y_: batch[1], keep_prob: 1.0})
+      train_accuracy = accuracy.eval(feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.0})
       print('step %d, training accuracy %g' % (i, train_accuracy))
     train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: 0.5})
 
-  print('test accuracy %g' % accuracy.eval(feed_dict={
-      x: test_x, y_: test_y, keep_prob: 1.0}))
+total_accuracy = 0
+for i in range(len(test_x)):
+  total_accuracy += accuracy.eval(feed_dict={x: test_x[i], y_: test_y[i], keep_prob: 1.0})
+print("test accuracy %f" % total_accuracy/len(test_x))
