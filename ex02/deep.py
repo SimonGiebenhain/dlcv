@@ -6,10 +6,15 @@ import tensorflow as tf
 a = 20
 bb = 1.2
 
+nr_batches = 463
+nr_batches_test = 14
+
+
+
 def sigmoid_modified(x):
     return 1 / (1 + np.exp(-x * a))
 
-def nomrmalize(I):
+def normalize(I):
     x_queer = np.sum(np.sum(I, axis=2, keepdims=True), axis=1, keepdims=True) / (784 * 255)
     train_x = sigmoid_modified((I / 255) - (x_queer/bb))
     #train_x = I/255 - x_queer
@@ -21,26 +26,31 @@ def nomrmalize(I):
         plt.show()'''
     return np.reshape(train_x, (train_x.shape[0], 784))
 
+
 def load_sample_dataset():
     dataset = 'train_test_file_list.h5'
     with h5py.File(dataset, 'r') as hf:
-        train_x = np.split(nomrmalize(np.array(hf.get('train_x'), dtype=np.float64)), 463, axis=0)
+        train_x_in = np.array(hf.get('train_x'), dtype=np.float64)
 
-        y_in = np.squeeze(np.array(hf.get('train_y')))
-        train_y = np.zeros((y_in.shape[0], 10))
-        train_y[np.arange(y_in.shape[0]), y_in] = 1
-        train_y = np.split(train_y, 463, axis=0)
+        train_y_in = np.squeeze(np.array(hf.get('train_y')))
 
-        test_x = np.split(nomrmalize(np.array(hf.get('test_x'), dtype=np.float64)), 14, axis=0)
+        test_x_in = np.array(hf.get('test_x'), dtype=np.float64)
 
-        y_test_in = np.squeeze(np.array(hf.get('test_y')))
-        test_y = np.zeros((y_test_in.shape[0], 10))
-        test_y[np.arange(y_test_in.shape[0]), y_test_in] = 1
-        test_y = np.split(test_y, 14, axis=0)
+        test_y_in = np.squeeze(np.array(hf.get('test_y')))
 
-    return train_x, train_y, test_x, test_y
+    return train_x_in, train_y_in, test_x_in, test_y_in
 
-train_x,train_y,test_x,test_y = load_sample_dataset()
+def preprocess_data(x, y, n):
+    x_train = np.split(normalize(x), n, axis=0)
+    y_train = np.zeros((y.shape[0], 10))
+    y_train[np.arange(y.shape[0]), y] = 1
+    y_train = np.split(y_train, n, axis=0)
+    return x_train, y_train
+
+train_x_in, train_y_in, test_x_in, test_y_in = load_sample_dataset()
+
+train_x, train_y = preprocess_data(train_x_in, train_y_in, nr_batches)
+test_x, test_y = preprocess_data(test_x_in, test_y_in, nr_batches_test)
 
 x = tf.placeholder(tf.float32, shape=[None, 784])
 y_ = tf.placeholder(tf.float32, shape=[None, 10])
@@ -89,26 +99,46 @@ b_fc2 = bias_variable([10])
 y_conv = tf.matmul(h_fc1_drop, W_fc2) + b_fc2
 
 cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=y_conv))
-train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
+
+train_step = [tf.train.AdamOptimizer(1 / (10**i)).minimize(cross_entropy) for i in range(7)]
+
+
 correct_prediction = tf.equal(tf.argmax(y_conv, 1), tf.argmax(y_, 1))
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
-# TODO random batches
 with tf.Session() as sess:
-    sess.run(tf.global_variables_initializer())
-    for i in range(20000):
-        if i % 100 == 0:
-            train_accuracy = accuracy.eval(feed_dict={x: train_x[i % 463], y_: train_y[i % 463], keep_prob: 1.0})
-            print('step %d, training accuracy %g' % (i, train_accuracy))
-        train_step.run(feed_dict={x: train_x[i % 463], y_: train_y[i % 463], keep_prob: 0.5})
+    res = np.zeros((7, 21, 2))
+    for k in range(len(train_step)):
+        sess.run(tf.global_variables_initializer())
+        for i in range(15000):
+            train_step[k].run(feed_dict={x: train_x[i % nr_batches], y_: train_y[i % nr_batches], keep_prob: 1.0})
+            if i % 1000 == 0:
+                train_accuracy = accuracy.eval(feed_dict={x: train_x[i % nr_batches], y_: train_y[i % nr_batches], keep_prob: 1.0})
+                test_accuracy = 0.0
+                for j in range(len(test_x)):
+                    test_accuracy += accuracy.eval(feed_dict={x: test_x[j], y_: test_y[j], keep_prob: 1.0})
+                test_accuracy = test_accuracy / len(test_x)
+                print('step %d, training accuracy %g, test accuracy %g' % (i, train_accuracy, test_accuracy))
+                res[k, int(i/1000), 0] = train_accuracy
+                res[k, int(i/1000), 1] = test_accuracy
+            if i % nr_batches == 0:
+                rng_state = np.random.get_state()
+                np.random.shuffle(train_x_in)
+                np.random.set_state(rng_state)
+                np.random.shuffle(train_y_in)
+                train_x, train_y = preprocess_data(train_x_in, train_y_in, nr_batches)
 
-    test_accuracy = 0.0
-    for i in range(len(test_x)):
-        test_accuracy += accuracy.eval(feed_dict={x: test_x[i], y_: test_y[i], keep_prob: 1.0})
-    test_accuracy = test_accuracy / len(test_x)
-    print('test accuracy %s' % test_accuracy)
-    train_accuracy = 0.0
-    for i in range(len(train_x)):
-        train_accuracy += accuracy.eval(feed_dict={x: train_x[i], y_: train_y[i], keep_prob: 1.0})
-    train_accuracy = train_accuracy / len(train_x)
-    print('train accuracy %s' % train_accuracy)
+        test_accuracy = 0.0
+        for i in range(len(test_x)):
+            test_accuracy += accuracy.eval(feed_dict={x: test_x[i], y_: test_y[i], keep_prob: 1.0})
+        test_accuracy = test_accuracy / len(test_x)
+        print('test accuracy %s' % test_accuracy)
+        train_accuracy = 0.0
+        for i in range(len(train_x)):
+            train_accuracy += accuracy.eval(feed_dict={x: train_x[i], y_: train_y[i], keep_prob: 1.0})
+        train_accuracy = train_accuracy / len(train_x)
+        print('train accuracy %s' % train_accuracy)
+        res[k, 20, 0] = train_accuracy
+        res[k, 20, 1] = test_accuracy
+
+print(res)
