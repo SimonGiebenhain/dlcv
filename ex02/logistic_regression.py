@@ -32,12 +32,12 @@ def normalize(I):
     x_queer = np.sum(np.sum(I, axis=2, keepdims=True), axis=1, keepdims=True) / (784 * 255)
     train_x = sigmoid_modified((I / 255) - (x_queer/bb))
     # Here you can see the changes the normalization does to the images.
-    '''for i in range(0,10):
-        plt.subplot(1, 2, 1)
+    '''for i in range(5):
+        plt.subplot(2, 5, i + 1)
         plt.imshow(I[i], cmap='gray')
-        plt.subplot(1, 2, 2)
+        plt.subplot(2, 5, i + 6)
         plt.imshow(train_x[i], cmap='gray')
-        plt.show()'''
+    plt.show()'''
     return np.reshape(train_x, (train_x.shape[0], 784))
 
 # Divide each pixel by the l2-norm, in order to get unit-length pixel
