@@ -39,11 +39,12 @@
 		
 		\begin{exercise}[p=55]{}
 			\question{}{
-			We besed our network design on the google tutorial. }
+			We besed our network design on the google tutorial.\\
+			The source code of this and all of the following subexercises can be found in \textbf{deep.py}}
 			\question{}
 			{
 			We used the sigmoid normalization as desribed above, instead of the unit norm, because this yielded slightly better results.\\
-			Our batches for the training contained 43 images each.
+			Our batches for the training contained 43 images each. The corresponding method is \textbf{run\_standar\_version()}.
 			}
 			\question{}{
 			train accuracy: 99.995\%\\
@@ -53,7 +54,7 @@
 			train accuracy: 99.970\%\\
 			test accuracy: 96.101\%\\
 			
-			We see that while the train accuracy hardly changes, the test accuracy deteriorates more severely. Therefore we conclude, that removing one layer causes the model to overfit, because it loses some ability to generalize.
+			We see that while the train accuracy hardly changes, the test accuracy deteriorates more severely. Therefore we conclude, that removing one layer causes the model to  lose some ability to generalize. This can be explained by the more shallow structure of the convolutional network. It does not combine the features of layer 1 to bigger features (because that layer has been lost). Therfore the model has a worse internal representation and smaller receptive field.
 			}
 			\question{}{
 			We chose to use the more sophisticated AdamOptimizer instead of the GradientDescentOptimizer, like it was recommended in the Google tutorial. \\
@@ -63,7 +64,7 @@
 			One observes that the bigger step sizes (1, 0.1 and 0.01) are way to coarse, such that the optimizer jumps back and forth over local minima.\\
 			Decreasing the step size just a little bit (to $10^{-3}$ or $10^{-4}$), makes huge improvments in accuracy. These step sizes seem to fit the problem quite well. With the first 1000 training cycles their accuracy rises extremely fast. It almost seems that for step size $10^{-3}$ a local minima has already been found, as the accuracy only improves slightly and does this in a zig-zag fashion. For step size $10^{-4}$ it takes up to 6000 training cycles to reach a local minima. However the accuracy curve is much smoother as for $10^{-3}$, because of the slightly smaller step size.\\
 			
-			Further decreasing of the step size, causes to model to learn more slowly. Furthermore the models cannot jump accross local minima as good as before, which causes them to get stuck in worse local minima than before.
+			Further decreasing of the step size, causes to model to learn more slowly. Furthermore the models cannot jump accross local minima as good as before, which causes them to get stuck in worse local minima than before. The corresponding function in \textbf{deep.py} is \textbf{step\_size()}.
 			
 			}
 			\question{}{
@@ -75,7 +76,7 @@ kernel size                 & \#features  1 & \#features2 & pooling             
 5x5, zero padding, stride=1 & 32            & 64          & max\_pool 2x2, stride 2 & 0.5     & 1024              \\ \hline
 \end{tabular} \\
 			
-			\textbf{Size of convolutional layer}:\\
+			\textbf{Size of the fully layer}:\\
 			Here the training and testing accuracy for changing sizes of the fully connected layer are displayed. \\
 			It can be seen that with small fully connected layers, there is underfitting to a certain degree and with too many nodes there is some overfitting. There seems to be a local maximum somewhere between 512 and 2048. However we did not have enough time for further investigations.\\
 			\includegraphics[scale=1.1]{convsize.png}\\
@@ -88,15 +89,17 @@ kernel size                 & \#features  1 & \#features2 & pooling             
 
 			\textbf{Number of features in the convolutional layer:}\\
 			
-			Programm läuft noch...\\
+			We compared different numbers of features for the first convolutional layer ranging from 4 to 128. The second convolutional layer had double the number of features of the first layer. The results show that a local optimum lies somwhere around 32. With below 32 features the model's capacity was to low for a high accuracy. With more features than 32 the test accuracy decreased again. However the training accuracy decreased equally. This might indicate that the number of training cycles(12500) was not sufficient to fully train that much features.\\
 			
-			\includegraphics[scale=1.1]{featurecount.png}\\
+			\includegraphics[scale=0.6]{hyper_nr_features.png}\\
 			
 			\textbf{Number of 3x3 convolutions replacing single convolution:}
 			Here we stacked some multiple 3x3 convolutional layers in order to replace the 5x5 convolution.\\
 			Our testing considered the following configuration (1:1), (1:2), (2:2), (2:3) and (3:3), where the first digit represents the size of the stack replacing the first convolutional layer and the second digit the second one. (2:3) achieved the best test result, altough it wasn't fully trained yet. It seems that with increasing stack sizes the networks take longer to train. (Training was done with 12500 cycles.)\\
 			
 			\includegraphics[scale=0.5]{hyper_nr_convolutions.png}
+			\\
+			The remaing methods in \textbf{deep.py} are dedicated towards this exercise. 
 			}
 		\end{exercise}
 		\begin{exercise}[p=20]{}
@@ -125,13 +128,23 @@ Considering that the amount of weights you have to train when only retraining ou
 		\end{exercise}
 		\begin{exercise}[p=20]{}
 		
+		The following picture shows the unit response for all classes. The images were obtained as an an average over 25 single results, each computed as described on the exercise sheet.\\
+		\includegraphics[scale=0.5]{unit_resonse_final_layer_avg25.png}
+		
+		The following picture depicts the unit respnse of the first convolutional layer. However the settings with which it was computed did not work for every feature at the same time (for some the value deverged to negativ infinty). Nevertheless a good amount resembles Gabor filters.
+		
+		\includegraphics[scale=0.5]{resp_conv1.png}
+		
+		The source can be found in \textbf{response.py}.
+				
 		\end{exercise}
 		\begin{exercise}[p=20]{}
-		
-		In order to check the bias of the estimator $\overline{x}$, we need to compute the expected value for $\overline{x}$ over all possible samples:\\
+		Since the random samples are uniformly drawn, it is clear that they can only be natural numbers (not real valued).\\
 		
 		\question{}
 		{
+				In order to check the bias of the estimator $\overline{x}$, we need to compute the expected value for $\overline{x}$ over all possible samples:\\
+
 		\begin{eqnarray*}
 		bias(\overline{x}) 
 		&=& E_{x_1, \dots, x_L \in [0, \theta]}[\overline{x}] - \theta \\
@@ -182,15 +195,34 @@ Considering that the amount of weights you have to train when only retraining ou
 		
 		\question{}
 		{
+			Let $\hat{\theta}(x) := max(x)$. First let's show that $\hat{\theta}$ is biased with induction:\\
+			\textbf{Induction Base:}\\
+			Let $L=1$. $E_{x \in [0,\theta]}[\hat{\theta}] = E[max(x)] = \frac{1}{\theta + 1} \sum_{i = 0}^{\theta}i = \frac{\theta}{2}$.\\
 			
-			Mach ich heute abend fertig.
+			\textbf{Induction Step:}\\
+			Let $L\in \mathbb{N}^+$. \\
+			$E_{x_1 \in [0,/theta], \dots x_{L+1} \in [0,\theta]}[max\{x_1, \dots, x_{L+1}\}] = E[max\{max\{x_1, \dots x_L\}, x_{L+1}\}] \stackrel{ind. hyp.}{=}E[max\{\frac{\theta}{2}, x_{L+1}\}] = max\{\frac{\theta}{2}, E_{x_{L+1}\in [0,\theta]}[x_{L+1}]\} = max\{\frac{\theta}{2}, \frac{\theta}{2}\} = \frac{\theta}{2}$. \\
+			It follows that $bias(\hat{\theta}) = \frac{-\theta}{2}$. Thus $\hat{\theta}$ is bias unless $\theta = 0$.
 			
+			Now let's figure out the standar error:\\
+			
+			
+			\begin{eqnarray*}
+			var(\hat{\theta}(x)) 
+			&=& E[(max(x) - E[max(x)])^2] \\
+			&=& \sum_{i = 0}^{\theta} P(max(x) = i) (i - E[max(x)])^2 \\
+			&=& \sum_{i = 0}^{\theta} P(max(x) = i) (i - \sum_{j = 0}^{\theta}P(max(x) = j) j)^2
+			\end{eqnarray*}
 			\\
-			
-			Let $\hat{\theta}(x) := max(x)$. Then it holds:\\
-			
-			
-			$var(\hat{\theta}(x) = E[(x_1 - \theta)^2] = $
+			 Now consider $L \rightarrow \infty$: \\
+			$\lim_{L \to \infty} P(max(x) = i) = \lim_{L \to \infty} P(max\{x_1, \dots x_L\} = i)  ~ = \begin{cases}
+     1 & \text{if} ~ i = \theta \\
+     0 & \text{else} 
+   \end{cases}$.
+   Therefore the equation above reduces to teh following:\\
+   $\sum_{i = 0}^{\theta} P(max(x) = i) (i - \sum_{j = 0}^{\theta}P(max(x) = j) j)^2 = (\theta - \theta)^2  = 0$
+   \\
+   Since the $\lim_{L \to \infty}var(\hat{\theta}) = 0$, the same holds for the standdard error.
 		}
 		\end{exercise}
 		
