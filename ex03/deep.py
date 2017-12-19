@@ -113,7 +113,7 @@ weight_decay = cross_entropy + lam * tf.reduce_sum(tf.stack(
 
 update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
 with tf.control_dependencies(update_ops):
-    train_step = tf.train.AdamOptimizer(1e-3).minimize(weight_decay)
+    train_step = tf.train.AdamOptimizer(1e-4).minimize(weight_decay)
 
 correct_prediction = tf.equal(tf.argmax(y_conv, 1), tf.argmax(y_, 1))
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
@@ -122,9 +122,9 @@ with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
     sess.run(tf.variables_initializer(tf.get_collection('vars')))
 
-    for i in range(5000):
-        batch = mnist.train.next_batch(50)
-        train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: 1, phase_train: True})
+    for i in range(10000):
+        batch = mnist.train.next_batch(75)
+        train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: 0.5, phase_train: True})
         if i % 1000 == 0:
             train_accuracy = accuracy.eval(
                 feed_dict={x: mnist.validation.images, y_: mnist.validation.labels, keep_prob: 1.0, phase_train: False})

@@ -83,13 +83,20 @@ accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
-    for i in range(10000):
-        batch = mnist.train.next_batch(50)
-        train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: 1, phase_train: True})
-        if i % 1000 == 0:
-            train_accuracy = accuracy.eval(
-                feed_dict={x: mnist.validation.images, y_: mnist.validation.labels, keep_prob: 1.0, phase_train: False})
-            print('train accuracy: %s' % train_accuracy)
+    res = np.zeros((11,2))
+    for j in range(10):
+        for i in range(10000):
+            batch = mnist.train.next_batch(50)
+            train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: 0.5, phase_train: True})
+            if i % 1000 == 0:
+                train_accuracy = accuracy.eval(
+                    feed_dict={x: mnist.validation.images, y_: mnist.validation.labels, keep_prob: 1.0, phase_train: False})
+                print('train accuracy: %s' % train_accuracy)
+                res[i,0] = train_accuracy
+                test_accuracy = accuracy.eval(
+                    feed_dict={x: mnist.test.images, y_: mnist.test.labels, keep_prob: 1.0, phase_train: False})
+                print('test accuracy: % s' % test_accuracy)
+                res[i,1] = test_accuracy
 
     test_accuracy = accuracy.eval(
         feed_dict={x: mnist.test.images, y_: mnist.test.labels, keep_prob: 1.0, phase_train: False})
@@ -97,3 +104,6 @@ with tf.Session() as sess:
         feed_dict={x: mnist.validation.images, y_: mnist.validation.labels, keep_prob: 1.0, phase_train: False})
     print('train accuracy: %s' % train_accuracy)
     print('train accuracy %s \t test accuracy %s' % (train_accuracy, test_accuracy))
+    res[10,0] = train_accuracy
+    res[10,1] = test_accuracy
+    print(res)

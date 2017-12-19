@@ -74,20 +74,17 @@ with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
         sess.run(a.assign(j * 0.1))
         print('Alpha is %s' % a.eval())
-        for i in range(20000):
+        for i in range(5000):
             batch = mnist.train.next_batch(50)
-            train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: 1})
+            train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: 0.5})
             if i % 1000 == 0:
                 train_accuracy = accuracy.eval(
                     feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.0})
                 print('train accuracy: %s' % train_accuracy)
 
         test_accuracy = accuracy.eval(feed_dict={x: mnist.test.images, y_: mnist.test.labels, keep_prob: 1.0})
-        train_accuracy = 0
-        for i in range(100):
-            batch = mnist.train.next_batch(100)
-            train_accuracy += accuracy.eval(feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.0})
-        train_accuracy /= 100
+        train_accuracy = accuracy.eval(
+            feed_dict={x: mnist.validation.images, y_: mnist.validation.labels, keep_prob: 1.0})
         print('train accuracy %s \t test accuracy %s' % (train_accuracy, test_accuracy))
         res[j,0] = train_accuracy
         res[j,1] = test_accuracy
