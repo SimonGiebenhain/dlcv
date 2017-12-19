@@ -74,7 +74,7 @@ with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
         sess.run(a.assign(j * 0.1))
         print('Alpha is %s' % a.eval())
-        for i in range(5000):
+        for i in range(10000):
             batch = mnist.train.next_batch(50)
             train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: 0.5})
             if i % 1000 == 0:
@@ -82,9 +82,20 @@ with tf.Session() as sess:
                     feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.0})
                 print('train accuracy: %s' % train_accuracy)
 
-        test_accuracy = accuracy.eval(feed_dict={x: mnist.test.images, y_: mnist.test.labels, keep_prob: 1.0})
-        train_accuracy = accuracy.eval(
-            feed_dict={x: mnist.validation.images, y_: mnist.validation.labels, keep_prob: 1.0})
+        x_test = np.split(mnist.test.images, 10)
+        y_test = np.split(mnist.test.labels, 10)
+        test_accuracy = 0
+        for i in range(10):
+            test_accuracy += accuracy.eval(feed_dict={x: x_test[i], y_: y_test[i], keep_prob: 1.0})
+        test_accuracy /= 10
+
+        x_train = np.split(mnist.train.images, 55)
+        y_train = np.split(mnist.train.labels, 55)
+        train_accuracy = 0
+        for i in range(55):
+            train_accuracy += accuracy.eval(
+               feed_dict={x: x_train[i], y_: y_train[i], keep_prob: 1.0})
+        train_accuracy /= 55
         print('train accuracy %s \t test accuracy %s' % (train_accuracy, test_accuracy))
         res[j,0] = train_accuracy
         res[j,1] = test_accuracy
