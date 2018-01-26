@@ -1,0 +1,117 @@
+\documentclass{article}
+\usepackage[en]{ukon-infie}
+\usepackage[utf8]{inputenc}
+\usepackage{algorithm2e}
+\usepackage{amsmath}
+\usepackage{graphicx}
+% kann de oder en sein
+% kann bubble break, topexercise sein
+
+\Names{Jonas Probst, Simon Giebenhain, Gabriel Scheibler, Clemens Gutknecht}
+\Lecture[DLCV]{Deep Learning for Computer Vision}
+\Term{WS 2017/18}
+
+\begin{document}
+    \begin{ukon-infie}[28.1.18]{4}
+
+		
+		\begin{exercise}[p=20]{Transposed Convolutions}
+		\question{}
+		{
+			
+		}
+		\question{}
+		{
+			
+		}
+		\question{}
+		{
+			
+		}
+		\end{exercise}
+		
+		\begin{exercise}[p=60]{Encoder-Decoder}
+		\question{}
+		{
+		The method \textbf{normalize\_mean()} and \textbf{normalize\_stddev()} normalize the mean and standard deviation of the input data respectively.
+		}
+		\question{}
+		{		
+		The architecture of our encoder-decoder is described in the following:\\
+		\textbf{Encoder}:\\
+		The inputs are images of size $[28 , 28 , 1]$.\\
+		We apply a strided convolution with kernel dimensions $[3,3,1,32]$ and strides $[1,2,2,1]$ followed by basically the same convolution with kernel dimensions $[3,3,32,64]$ and strides $[1,2,2,1]$. This yields an output of the following shape $[7,7,64]$.\\
+		The last step of the encoder is a fully connected layer, which reduces the data to a vector of size 512.\\
+		A dropout layer connects encoder and decoder.\\
+		
+		\textbf{Decoder:}\\
+		First the data of shape $[\text{batch\_size},512 ]$ is transformed to shape $[\text{batch\_size},7,7,64 ]$ with a fully connected layer and reshaping.\\
+		Afterwards we apply transposed convolutions mirroring the convolutions of the encoder, such that we come form shape $[7,7,64]$ to $[28,28,1]$ per image. An additional fully connected layer, which maintains shape, follows the convolutions.
+		
+		\textbf{Further Details:} \\
+		We used \textit{parametric ReLU} as activation function and applied \textit{batch normalization} before every activation.\\
+		As mentioned above we applied a \textit{droupout-layer} inbetween encoder and decoder.
+		}
+		\question{}
+		{
+		We struggled to come up with a sensible training method. At first we believed, that classifying(pretrained on the latin training dataset) the output of the encoder-decoder and apllying cross entropy to the result, would be the best idea. We followed this approach in \textbf{encoder\_decoder\_class.py}. We achieved quit solid results, with a classification accuracy of around 97\%. However, the outputs of the encoder-decoder were not readable for humans. This is due to the fact, that the classifier classifies every input he gets, and cannot distinguish between a nice letter and some extremly noisy letter. We tried to fix this, by introducing a noise class, with randomly generated training examples labeled as noise, but it did not help. \\
+		Here is a visualization of the results:\\
+		\includegraphics[scale=0.5]{encoder_decoder_class.png}
+		
+		
+		Another approach for the loss function, is to take the L2-loss of the output of the encoder-decoder with random examples of latin letters of the same class. This approach seemed to work quite well. However the outputs are always very similar within each class.\\
+		
+		VIS
+		
+		One could also choose a representative for each class of the latin latters and always compute the L2-loss of the difference of the output of the encoder-decoder and the respective representative. This basically achieves, that for every cyrillic letter of class $k$ the encoder-decoder outputs the representativ of class $k$. (The same could be achieved with simple classification and return the representative of that class)\\
+		Here is a visualization:\\
+		
+		VIS
+		
+		
+		Also one could always compare with the mean of the respective class, which does not really make sense, because the network is then trained to basically classify the image and return the mean of the resulting class. Here are the results:\\
+		\includegraphics[scale=0.5]{decoder_encoder_mean.png}
+		
+		\textbf{Tricks:} Mentioned above in (b)
+		
+		}
+		\question{}
+		{
+		See (c).
+		}
+		\question{}
+		{
+		For this exercise we used the training strategy and weights of \textbf{encoder\_decoder\_random.py}. The script \textbf{latent\_space.py} loades the weights saved in \textbf{encoder\_decoder\_random.train\_for\_latent\_space()}. The encoder part of the network is obmitted, it begins with the 512-tupel, which was in the middle before. All variables are markes as untrainable and only the 512-tupel is trainable. We optimezed for every class, the loss for a single class is the MSE of the output of the encoder and all training examples of that class. The results are shown below:\\
+		
+		\includegraphics[scale=0.5]{latent_space.png}
+		}
+		
+		\end{exercise}
+		
+		\begin{exercise}[p=10]{Backpropagation trough a ConvLayer}
+		\question{}
+		{
+		}
+		\question{}
+		{
+			
+		}
+		
+		\end{exercise}
+		\begin{exercise}[p=20]{PCA vs. Auto-Encoder}
+		\question{}
+		{
+		}
+		\question{}
+		{
+			
+		}
+		\question{}
+		{
+			
+		}
+		
+		\end{exercise}
+
+\end{ukon-infie}
+\end{document}
