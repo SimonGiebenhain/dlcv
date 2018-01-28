@@ -32,7 +32,6 @@
 			layer4 = tf.nn.conv2d_transpose(layer3, W4, output_shape=tf.constant(np.array([-1,64,48,17],
 			dtype=np.int32)), strides=[1,3,2,1], padding = 'SAME')
 			layer4.shape
-			TensorShape([Dimension(None), Dimension(64), Dimension(48), Dimension(17)])
 		\end{verbatim}	
 		
 		\question{}
