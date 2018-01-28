@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.4.25)  26 JAN 2018 14:41
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.4.25)  26 JAN 2018 23:34
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1551,10 +1551,10 @@ Underfull \hbox (badness 10000) in paragraph at lines 54--54
 File: encoder_decoder_class.png Graphic file (type png)
 
 <use encoder_decoder_class.png>
-Package pdftex.def Info: encoder_decoder_class.png used on input line 77.
+Package pdftex.def Info: encoder_decoder_class.png used on input line 78.
 (pdftex.def)             Requested size: 372.18959pt x 139.48076pt.
 
-Overfull \hbox (0.94144pt too wide) in paragraph at lines 77--77
+Overfull \hbox (0.94144pt too wide) in paragraph at lines 78--78
 \T1/lmr/m/n/10 (-20) tropy to the re-sult, would be the best idea. We fol-lowed
  this ap-proach in \T1/lmr/bx/n/10 en-coder_decoder_class.py\T1/lmr/m/n/10 (-20
 ) .
@@ -1563,75 +1563,69 @@ Overfull \hbox (0.94144pt too wide) in paragraph at lines 77--77
 [1
 
 {/usr/local/texlive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Underfull \hbox (badness 10000) in paragraph at lines 77--77
+Underfull \hbox (badness 10000) in paragraph at lines 78--78
 
  []
 
+<encoder_decoder_random.png, id=20, 753.7761pt x 234.1548pt>
+File: encoder_decoder_random.png Graphic file (type png)
 
-Underfull \hbox (badness 10000) in paragraph at lines 77--77
+<use encoder_decoder_random.png>
+Package pdftex.def Info: encoder_decoder_random.png used on input line 78.
+(pdftex.def)             Requested size: 376.88712pt x 117.0771pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 78--78
 
  []
 
-<decoder_encoder_mean.png, id=20, 765.3393pt x 243.5499pt>
+<encoder_decoder_single.png, id=21, 770.3982pt x 286.1892pt>
+File: encoder_decoder_single.png Graphic file (type png)
+
+<use encoder_decoder_single.png>
+Package pdftex.def Info: encoder_decoder_single.png used on input line 78.
+(pdftex.def)             Requested size: 385.19815pt x 143.09424pt.
+
+<decoder_encoder_mean.png, id=22, 765.3393pt x 243.5499pt>
 File: decoder_encoder_mean.png Graphic file (type png)
 
 <use decoder_encoder_mean.png>
-Package pdftex.def Info: decoder_encoder_mean.png used on input line 77.
+Package pdftex.def Info: decoder_encoder_mean.png used on input line 78.
 (pdftex.def)             Requested size: 382.6687pt x 121.77464pt.
-
-Overfull \hbox (52.83997pt too wide) in paragraph at lines 87--87
+ [2 <./encoder_decoder_class.png> <./encoder_decoder_random.png> <./encoder_dec
+oder_single.png>]
+Overfull \hbox (52.83997pt too wide) in paragraph at lines 88--88
 \T1/lmr/m/n/10 (-20) script \T1/lmr/bx/n/10 la-tent_space.py \T1/lmr/m/n/10 (-2
 0) loades the weights saved in \T1/lmr/bx/n/10 en-coder_decoder_random.train_fo
 r_latent_space()\T1/lmr/m/n/10 (-20) .
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 87--87
+Underfull \hbox (badness 10000) in paragraph at lines 88--88
 
  []
 
-<latent_space.png, id=21, 925.056pt x 469.755pt>
+<latent_space.png, id=29, 790.6338pt x 314.3745pt>
 File: latent_space.png Graphic file (type png)
  <use latent_space.png>
-Package pdftex.def Info: latent_space.png used on input line 87.
-(pdftex.def)             Requested size: 462.52687pt x 234.87692pt.
+Package pdftex.def Info: latent_space.png used on input line 88.
+(pdftex.def)             Requested size: 395.31593pt x 157.18686pt.
 
-Overfull \hbox (25.28282pt too wide) in paragraph at lines 87--88
-[][]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 87--88
-
- []
-
-[2 <./encoder_decoder_class.png> <./decoder_encoder_mean.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 89--89
+Underfull \hbox (badness 10000) in paragraph at lines 90--90
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 89--89
+Underfull \hbox (badness 10000) in paragraph at lines 90--90
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 91--94
+Underfull \hbox (badness 10000) in paragraph at lines 92--100
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 91--94
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 94--98
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 98--98
+Underfull \hbox (badness 10000) in paragraph at lines 92--100
 
  []
 
@@ -1646,72 +1640,151 @@ Underfull \hbox (badness 10000) in paragraph at lines 100--100
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 101--104
+Underfull \hbox (badness 10000) in paragraph at lines 106--106
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 101--104
+Underfull \hbox (badness 10000) in paragraph at lines 106--106
+
+ []
+
+[3 <./decoder_encoder_mean.png> <./latent_space.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 107--113
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 104--108
+Underfull \hbox (badness 10000) in paragraph at lines 107--113
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 108--108
+Underfull \hbox (badness 10000) in paragraph at lines 113--113
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 112--112
+Underfull \hbox (badness 10000) in paragraph at lines 180--180
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 114--114
+Underfull \hbox (badness 10000) in paragraph at lines 180--180
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 114--114
+Underfull \hbox (badness 10000) in paragraph at lines 180--180
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 180--180
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 180--180
+
+ []
+
+[4]
+Underfull \hbox (badness 10000) in paragraph at lines 180--180
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 180--180
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 180--180
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 180--180
+
+ []
+
+[5]
+Underfull \hbox (badness 10000) in paragraph at lines 180--180
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 180--180
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 180--180
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 180--180
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 188--188
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 190--190
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 190--190
 
  []
 
 
 AED: lastpage setting LastPage
-[3
+[6
 \openout4 = `dlcv_04.top'.
 
- <./latent_space.png>] (./dlcv_04.aux) )
+] (./dlcv_04.aux) )
 (\end occurred inside a group at level 1)
 
 ### simple group (level 1) entered at line 1061 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 22915 strings out of 493014
- 422583 string characters out of 6133351
- 577600 words of memory out of 5000000
- 25813 multiletter control sequences out of 15000+600000
- 60608 words of font info for 77 fonts, out of 8000000 for 9000
+ 22939 strings out of 493014
+ 423023 string characters out of 6133351
+ 592600 words of memory out of 5000000
+ 25821 multiletter control sequences out of 15000+600000
+ 61189 words of font info for 84 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 62i,11n,74p,857b,4913s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 62i,12n,74p,857b,4913s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/lm/lm-mathi
-t.enc}{/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/lo
-cal/texlive/2016/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}</usr/local/texlive/20
-16/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></usr/local/texlive/2016/texmf-d
-ist/fonts/type1/public/lm/lmbx12.pfb></usr/local/texlive/2016/texmf-dist/fonts/
-type1/public/lm/lmbx9.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/publi
-c/lm/lmcsc10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/lm/lmmi
-10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/lm/lmr10.pfb></us
-r/local/texlive/2016/texmf-dist/fonts/type1/public/lm/lmr9.pfb></usr/local/texl
-ive/2016/texmf-dist/fonts/type1/public/lm/lmri10.pfb>
-Output written on dlcv_04.pdf (3 pages, 316029 bytes).
+t.enc}{/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/us
+r/local/texlive/2016/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/texliv
+e/2016/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/local/texlive/2016/tex
+mf-dist/fonts/enc/dvips/lm/lm-ec.enc}</usr/local/texlive/2016/texmf-dist/fonts/
+type1/public/lm/lmbx10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/publ
+ic/lm/lmbx12.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/lm/lmbx
+9.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/lm/lmcsc10.pfb></u
+sr/local/texlive/2016/texmf-dist/fonts/type1/public/lm/lmex10.pfb></usr/local/t
+exlive/2016/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></usr/local/texlive/201
+6/texmf-dist/fonts/type1/public/lm/lmmi5.pfb></usr/local/texlive/2016/texmf-dis
+t/fonts/type1/public/lm/lmmi7.pfb></usr/local/texlive/2016/texmf-dist/fonts/typ
+e1/public/lm/lmr10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/l
+m/lmr5.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/lm/lmr7.pfb><
+/usr/local/texlive/2016/texmf-dist/fonts/type1/public/lm/lmr9.pfb></usr/local/t
+exlive/2016/texmf-dist/fonts/type1/public/lm/lmri10.pfb></usr/local/texlive/201
+6/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/local/texlive/2016/texmf-di
+st/fonts/type1/public/lm/lmsy7.pfb></usr/local/texlive/2016/texmf-dist/fonts/ty
+pe1/public/amsfonts/symbols/msbm10.pfb>
+Output written on dlcv_04.pdf (6 pages, 474839 bytes).
 PDF statistics:
- 61 PDF objects out of 1000 (max. 8388607)
- 41 compressed objects within 1 object stream
+ 108 PDF objects out of 1000 (max. 8388607)
+ 73 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 17436 words of extra memory for PDF output out of 20736 (max. 10000000)
+ 17446 words of extra memory for PDF output out of 20736 (max. 10000000)
 
